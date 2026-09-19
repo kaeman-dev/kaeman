@@ -1,0 +1,414 @@
+{
+  "fineGems": [
+    {
+      "id": "FINE_JASPER_GEM",
+      "name": "&9Fine Jasper Gemstone",
+      "weight": 0,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_AMBER_GEM",
+      "name": "&9Fine Amber Gemstone",
+      "weight": 0,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_SAPPHIRE_GEM",
+      "name": "&9Fine Sapphire Gemstone",
+      "weight": 0,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_TOPAZ_GEM",
+      "name": "&9Fine Topaz Gemstone",
+      "weight": 0,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_RUBY_GEM",
+      "name": "&9Fine Ruby Gemstone",
+      "weight": 0,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_AMETHYST_GEM",
+      "name": "&9Fine Amethyst Gemstone",
+      "weight": 0,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_JADE_GEM",
+      "name": "&9Fine Jade Gemstone",
+      "weight": 0,
+      "quantity": 1
+    }
+  ],
+  "items": [
+    {
+      "id": "FLAWLESS_JASPER_GEM",
+      "name": "&5Flawless Jasper Gemstone",
+      "weight": 5,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_RUBY_GEM",
+      "name": "&5Flawless Ruby Gemstone",
+      "weight": 15,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_AMETHYST_GEM",
+      "name": "&5Flawless Amethyst Gemstone",
+      "weight": 15,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_JADE_GEM",
+      "name": "&5Flawless Jade Gemstone",
+      "weight": 15,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_AMBER_GEM",
+      "name": "&5Flawless Amber Gemstone",
+      "weight": 15,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_SAPPHIRE_GEM",
+      "name": "&5Flawless Sapphire Gemstone",
+      "weight": 15,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_TOPAZ_GEM",
+      "name": "&5Flawless Topaz Gemstone",
+      "weight": 15,
+      "quantity": 1
+    },
+    {
+      "id": "DIVAN_ALLOY",
+      "name": "&6Divan's Alloy",
+      "weight": 17,
+      "quantity": 1
+    },
+    {
+      "id": "PET_ITEM_QUICK_CLAW",
+      "name": "&5Quick Claw",
+      "weight": 50,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_JASPER_GEM",
+      "name": "&9Fine Jasper Gemstone",
+      "weight": 200,
+      "quantity": 1
+    },
+    {
+      "id": "TREASURITE",
+      "name": "&5Treasurite",
+      "weight": 200,
+      "quantity": 10
+    },
+    {
+      "id": "RECALL_POTION",
+      "name": "&5Recall Potion",
+      "weight": 250,
+      "quantity": 1
+    },
+    {
+      "id": "WISHING_COMPASS",
+      "name": "&aWishing Compass",
+      "weight": 500,
+      "quantity": 3
+    },
+    {
+      "id": "PRECIOUS_PEARL",
+      "name": "&5Precious Pearl",
+      "weight": 500,
+      "quantity": 1
+    },
+    {
+      "id": "CLAW_FOSSIL",
+      "name": "&6Claw Fossil",
+      "weight": 500,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWED_JASPER_GEM",
+      "name": "&aFlawed Jasper Gemstone",
+      "weight": 700,
+      "quantity": 32
+    },
+    {
+      "id": "GEMSTONE_MIXTURE",
+      "name": "&9Gemstone Mixture",
+      "weight": 700,
+      "quantity": 1
+    },
+    {
+      "id": "ENCHANTMENT_FORTUNE_4",
+      "name": "&fFortune IV",
+      "weight": 700,
+      "quantity": 1
+    },
+    {
+      "id": "ESSENCE_GOLD",
+      "name": "&6Gold Essence",
+      "weight": 750,
+      "quantity": 10
+    },
+    {
+      "id": "ESSENCE_DIAMOND",
+      "name": "&bDiamond Essence",
+      "weight": 750,
+      "quantity": 10
+    },
+    {
+      "id": "FINE_RUBY_GEM",
+      "name": "&9Fine Ruby Gemstone",
+      "weight": 900,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_AMETHYST_GEM",
+      "name": "&9Fine Amethyst Gemstone",
+      "weight": 900,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_JADE_GEM",
+      "name": "&9Fine Jade Gemstone",
+      "weight": 900,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_AMBER_GEM",
+      "name": "&9Fine Amber Gemstone",
+      "weight": 900,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_SAPPHIRE_GEM",
+      "name": "&9Fine Sapphire Gemstone",
+      "weight": 900,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_TOPAZ_GEM",
+      "name": "&9Fine Topaz Gemstone",
+      "weight": 900,
+      "quantity": 1
+    },
+    {
+      "id": "JADERALD",
+      "name": "&9Jaderald",
+      "weight": 1450,
+      "quantity": 1
+    },
+    {
+      "id": "DWARVEN_OS_GEMSTONE_GRAHAMS",
+      "name": "&5Dwarven O's Gemstone Grahams",
+      "weight": 1450,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWED_RUBY_GEM",
+      "name": "&aFlawed Ruby Gemstone",
+      "weight": 2000,
+      "quantity": 40
+    },
+    {
+      "id": "FLAWED_AMETHYST_GEM",
+      "name": "&aFlawed Amethyst Gemstone",
+      "weight": 2000,
+      "quantity": 40
+    },
+    {
+      "id": "FLAWED_JADE_GEM",
+      "name": "&aFlawed Jade Gemstone",
+      "weight": 2000,
+      "quantity": 40
+    },
+    {
+      "id": "FLAWED_AMBER_GEM",
+      "name": "&aFlawed Amber Gemstone",
+      "weight": 2000,
+      "quantity": 40
+    },
+    {
+      "id": "FLAWED_SAPPHIRE_GEM",
+      "name": "&aFlawed Sapphire Gemstone",
+      "weight": 2000,
+      "quantity": 40
+    },
+    {
+      "id": "FLAWED_TOPAZ_GEM",
+      "name": "&aFlawed Topaz Gemstone",
+      "weight": 2000,
+      "quantity": 40
+    },
+    {
+      "id": "FLAWED_JASPER_GEM",
+      "name": "&aFlawed Jasper Gemstone",
+      "weight": 2000,
+      "quantity": 24
+    },
+    {
+      "id": "TREASURITE",
+      "name": "&5Treasurite",
+      "weight": 2000,
+      "quantity": 5
+    },
+    {
+      "id": "Helix",
+      "name": "&6Helix Fossil",
+      "weight": 4000,
+      "quantity": 1
+    },
+    {
+      "id": "ENCHANTMENT_LAPIDARY_1",
+      "name": "&fLapidary I",
+      "weight": 4000,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWED_RUBY_GEM",
+      "name": "&aFlawed Ruby Gemstone",
+      "weight": 5000,
+      "quantity": 24
+    },
+    {
+      "id": "FLAWED_AMETHYST_GEM",
+      "name": "&aFlawed Amethyst Gemstone",
+      "weight": 5000,
+      "quantity": 24
+    },
+    {
+      "id": "FLAWED_JADE_GEM",
+      "name": "&aFlawed Jade Gemstone",
+      "weight": 5000,
+      "quantity": 24
+    },
+    {
+      "id": "FLAWED_AMBER_GEM",
+      "name": "&aFlawed Amber Gemstone",
+      "weight": 5000,
+      "quantity": 24
+    },
+    {
+      "id": "FLAWED_SAPPHIRE_GEM",
+      "name": "&aFlawed Sapphire Gemstone",
+      "weight": 5000,
+      "quantity": 24
+    },
+    {
+      "id": "FLAWED_TOPAZ_GEM",
+      "name": "&aFlawed Topaz Gemstone",
+      "weight": 5000,
+      "quantity": 24
+    },
+    {
+      "id": "FLAWED_JASPER_GEM",
+      "name": "&aFlawed Jasper Gemstone",
+      "weight": 5000,
+      "quantity": 12
+    },
+    {
+      "id": "PREHISTORIC_EGG",
+      "name": "&fPrehistoric Egg",
+      "weight": 5000,
+      "quantity": 1
+    },
+    {
+      "id": "DIVAN_FRAGMENT",
+      "name": "&5Divan Fragment",
+      "weight": 6000,
+      "quantity": 1
+    },
+    {
+      "id": "OIL_BARREL",
+      "name": "&aOil Barrel",
+      "weight": 8000,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWED_RUBY_GEM",
+      "name": "&aFlawed Ruby Gemstone",
+      "weight": 10000,
+      "quantity": 12
+    },
+    {
+      "id": "FLAWED_AMETHYST_GEM",
+      "name": "&aFlawed Amethyst Gemstone",
+      "weight": 10000,
+      "quantity": 12
+    },
+    {
+      "id": "FLAWED_JADE_GEM",
+      "name": "&aFlawed Jade Gemstone",
+      "weight": 10000,
+      "quantity": 12
+    },
+    {
+      "id": "FLAWED_AMBER_GEM",
+      "name": "&aFlawed Amber Gemstone",
+      "weight": 10000,
+      "quantity": 12
+    },
+    {
+      "id": "FLAWED_SAPPHIRE_GEM",
+      "name": "&aFlawed Sapphire Gemstone",
+      "weight": 10000,
+      "quantity": 12
+    },
+    {
+      "id": "FLAWED_TOPAZ_GEM",
+      "name": "&aFlawed Topaz Gemstone",
+      "weight": 10000,
+      "quantity": 12
+    },
+    {
+      "id": "FLAWED_JASPER_GEM",
+      "name": "&aFlawed Jasper Gemstone",
+      "weight": 10000,
+      "quantity": 6
+    },
+    {
+      "id": "FLAWED_RUBY_GEM",
+      "name": "&aFlawed Ruby Gemstone",
+      "weight": 20000,
+      "quantity": 6
+    },
+    {
+      "id": "FLAWED_AMETHYST_GEM",
+      "name": "&aFlawed Amethyst Gemstone",
+      "weight": 20000,
+      "quantity": 6
+    },
+    {
+      "id": "FLAWED_JADE_GEM",
+      "name": "&aFlawed Jade Gemstone",
+      "weight": 20000,
+      "quantity": 6
+    },
+    {
+      "id": "FLAWED_AMBER_GEM",
+      "name": "&aFlawed Amber Gemstone",
+      "weight": 20000,
+      "quantity": 6
+    },
+    {
+      "id": "FLAWED_SAPPHIRE_GEM",
+      "name": "&aFlawed Sapphire Gemstone",
+      "weight": 20000,
+      "quantity": 6
+    },
+    {
+      "id": "FLAWED_TOPAZ_GEM",
+      "name": "&aFlawed Topaz Gemstone",
+      "weight": 20000,
+      "quantity": 6
+    }
+  ]
+}

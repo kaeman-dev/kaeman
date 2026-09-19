@@ -3,20 +3,18 @@
     "rootDir": "src",
     "outDir": "lib",
     "target": "es2022",
-    "module": "esnext",
+    "lib": ["es2024", "DOM"],
+    "module": "commonjs",
+    "moduleResolution": "node",
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "composite": true,
-    "incremental": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "jsxImportSource": "@satorijs/element",
+    "strict": true,
+    "strictNullChecks": false,
     "types": [
-      "node",
-      "yml-register/types"
-    ]
+      "node"
+    ],
+    "resolveJsonModule": true,
   },
   "include": [
     "src"

@@ -1,0 +1,190 @@
+{
+  "items": [
+    {
+      "id": "SHATTERED_PENDANT",
+      "name": "&6Shattered Locket",
+      "weight": 3,
+      "quantity": 1
+    },
+    {
+      "id": "SKELETON_KEY",
+      "name": "&6Skeleton Key",
+      "weight": 6,
+      "quantity": 1
+    },
+    {
+      "id": "UMBER_KEY",
+      "name": "&5Umber Key",
+      "weight": 10,
+      "quantity": 4
+    },
+    {
+      "id": "TUNGSTEN_KEY",
+      "name": "&5Tungsten Key",
+      "weight": 10,
+      "quantity": 4
+    },
+    {
+      "id": "MITHRIL_PLATE",
+      "name": "&9Mithril Plate",
+      "weight": 30,
+      "quantity": 1
+    },
+    {
+      "id": "FINE_ONYX_GEM",
+      "name": "&9Fine Onyx Gemstone",
+      "weight": 40,
+      "quantity": 160
+    },
+    {
+      "id": "FINE_PERIDOT_GEM",
+      "name": "&9Fine Peridot Gemstone",
+      "weight": 40,
+      "quantity": 160
+    },
+    {
+      "id": "FINE_CITRINE_GEM",
+      "name": "&9Fine Citrine Gemstone",
+      "weight": 40,
+      "quantity": 160
+    },
+    {
+      "id": "FINE_AQUAMARINE_GEM",
+      "name": "&9Fine Aquamarine Gemstone",
+      "weight": 40,
+      "quantity": 160
+    },
+    {
+      "id": "GLACITE_AMALGAMATION",
+      "name": "&5Glacite Amalgamation",
+      "weight": 40,
+      "quantity": 4
+    },
+    {
+      "id": "UMBER_KEY",
+      "name": "&5Umber Key",
+      "weight": 50,
+      "quantity": 2
+    },
+    {
+      "id": "TUNGSTEN_KEY",
+      "name": "&5Tungsten Key",
+      "weight": 50,
+      "quantity": 2
+    },
+    {
+      "id": "DWARVEN_OS_METALLIC_MINIS",
+      "name": "&6Dwarven O's Metallic Minis",
+      "weight": 50,
+      "quantity": 1
+    },
+    {
+      "id": "UMBER_PLATE",
+      "name": "&9Umber Plate",
+      "weight": 50,
+      "quantity": 1
+    },
+    {
+      "id": "TUNGSTEN_PLATE",
+      "name": "&9Tungsten Plate",
+      "weight": 50,
+      "quantity": 1
+    },
+    {
+      "id": "REFINED_MITHRIL",
+      "name": "&5Refined Mithril",
+      "weight": 60,
+      "quantity": 2
+    },
+    {
+      "id": "REFINED_TITANIUM",
+      "name": "&6Refined Titanium",
+      "weight": 60,
+      "quantity": 2
+    },
+    {
+      "id": "GOBLIN_EGG_BLUE",
+      "name": "&3Blue Goblin Egg",
+      "weight": 70,
+      "quantity": 4
+    },
+    {
+      "id": "FLAWLESS_ONYX_GEM",
+      "name": "&5Flawless Onyx Gemstone",
+      "weight": 80,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_PERIDOT_GEM",
+      "name": "&5Flawless Peridot Gemstone",
+      "weight": 80,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_CITRINE_GEM",
+      "name": "&5Flawless Citrine Gemstone",
+      "weight": 80,
+      "quantity": 1
+    },
+    {
+      "id": "FLAWLESS_AQUAMARINE_GEM",
+      "name": "&5Flawless Aquamarine Gemstone",
+      "weight": 80,
+      "quantity": 1
+    },
+    {
+      "id": "REFINED_UMBER",
+      "name": "&5Refined Umber",
+      "weight": 80,
+      "quantity": 2
+    },
+    {
+      "id": "REFINED_TUNGSTEN",
+      "name": "&5Refined Tungsten",
+      "weight": 80,
+      "quantity": 2
+    },
+    {
+      "id": "GLACITE_AMALGAMATION",
+      "name": "&5Glacite Amalgamation",
+      "weight": 80,
+      "quantity": 2
+    },
+    {
+      "id": "UMBER_KEY",
+      "name": "&5Umber Key",
+      "weight": 100,
+      "quantity": 1
+    },
+    {
+      "id": "TUNGSTEN_KEY",
+      "name": "&5Tungsten Key",
+      "weight": 100,
+      "quantity": 1
+    },
+    {
+      "id": "GOBLIN_EGG_BLUE",
+      "name": "&3Blue Goblin Egg",
+      "weight": 140,
+      "quantity": 2
+    },
+    {
+      "id": "SUSPICIOUS_SCRAP",
+      "name": "&9Suspicious Scrap",
+      "weight": 150,
+      "quantity": 4
+    },
+    {
+      "id": "ENCHANTMENT_ICE_COLD_1",
+      "name": "&fEnchanted Book",
+      "weight": 150,
+      "quantity": 1
+    },
+    {
+      "id": "BEJEWELED_HANDLE",
+      "name": "&9Bejeweled Handle",
+      "weight": 150,
+      "quantity": 4
+    }
+  ]
+}
