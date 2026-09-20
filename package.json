@@ -24,5 +24,8 @@
   },
   "peerDependencies": {
     "koishi": "^4.18.11"
+  },
+  "dependencies": {
+    "@noble/ciphers": "^2.4.0"
   }
 }
