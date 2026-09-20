@@ -1,0 +1,7 @@
+{
+  "fonts": {
+    "regular": { "file": "1_Minecraft-Regular.otf", "family": "Minecraft" },
+    "bold": { "file": "3_Minecraft-Bold.otf", "family": "Minecraft-Bold" }
+  },
+  "fontSizes": [8, 16, 24, 32, 40, 48, 56, 64]
+}
