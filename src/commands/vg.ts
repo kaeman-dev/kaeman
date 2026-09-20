@@ -1,21 +1,16 @@
 import type { Context } from "koishi";
 import type { Config } from "../index";
-import { renderMinecraft } from "../service/puppeteer/render";
-import { addPurse } from "../service/purse";
+import { h } from "koishi";
+import { renderMinecraft } from "../service/skia/minecrafttext";
+import type { Purse } from "../service/purse";
 import { simulateVg } from "../service/simulator/vg";
-import { handleError } from "../utils";
 
-export const registerVg = (ctx: Context, config: Config) =>
+export const registerVg = (ctx: Context, config: Config, purse: Purse) =>
   ctx
     .command("vg", "SkyBlock Vanguard Loot Simulator")
+    .userFields(["id"])
     .action(async ({ session }) => {
-      try {
-        const result = await simulateVg(ctx, config);
-        await addPurse(ctx, session.uid, result.profit);
-        await session.send(
-          await renderMinecraft(ctx, config.textRenderUrl, result),
-        );
-      } catch (err) {
-        await handleError(ctx, session, err, "vg");
-      }
+      const result = await simulateVg(ctx, config);
+      await purse.add(session.user.id, result.profit, "vg");
+      await session.send(h.image(await renderMinecraft(result), "image/png"));
     });

@@ -1,22 +1,17 @@
 import type { Context } from "koishi";
 import type { Config } from "../index";
-import { renderMinecraft } from "../service/puppeteer/render";
-import { addPurse } from "../service/purse";
+import { h } from "koishi";
+import { renderMinecraft } from "../service/skia/minecrafttext";
+import type { Purse } from "../service/purse";
 import { simulateCn } from "../service/simulator/cn";
-import { handleError } from "../utils";
 
-export const registerCn = (ctx: Context, config: Config) =>
+export const registerCn = (ctx: Context, config: Config, purse: Purse) =>
   ctx
     .command("cn", "SkyBlock Crystal Nucleus Loot Simulator")
     .alias("crystal", "ch")
+    .userFields(["id"])
     .action(async ({ session }) => {
-      try {
-        const result = await simulateCn(ctx, config);
-        await addPurse(ctx, session.uid, result.profit);
-        await session.send(
-          await renderMinecraft(ctx, config.textRenderUrl, result),
-        );
-      } catch (err) {
-        await handleError(ctx, session, err, "cn");
-      }
+      const result = await simulateCn(ctx, config);
+      await purse.add(session.user.id, result.profit, "cn");
+      await session.send(h.image(await renderMinecraft(result), "image/png"));
     });
