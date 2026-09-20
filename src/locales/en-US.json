@@ -1,0 +1,29 @@
+{
+  "commands": {
+    "purse": {
+      "description": "Show purse balance",
+      "messages": {
+        "balance": "Current purse balance: {balance}",
+        "pageInvalid": "Page number must be a positive integer",
+        "pageOutOfRange": "Page number out of range, {pages} pages in total"
+      },
+      "history": {
+        "description": "Show purse history, 10 entries per page",
+        "messages": {
+          "empty": "No purse history yet"
+        }
+      }
+    },
+    "ed": {
+      "messages": {
+        "helpIntro": "Example payload (players are repeatable; the first placement defaults to you):"
+      }
+    },
+    "debug": {
+      "description": "Send a QQ markdown card test (passive reply)",
+      "active": { "description": "Send a proactive markdown card test" },
+      "stream": { "description": "QQ direct-message streaming test: updates every 3 seconds, 2 rounds" },
+      "whoami": { "description": "Show caller identity info" }
+    }
+  }
+}

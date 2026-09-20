@@ -1,0 +1,29 @@
+{
+  "commands": {
+    "purse": {
+      "description": "查询钱包余额",
+      "messages": {
+        "balance": "当前钱包余额: {balance}",
+        "pageInvalid": "页码必须是正整数",
+        "pageOutOfRange": "页码超出范围，共 {pages} 页"
+      },
+      "history": {
+        "description": "查询资金流水，每页 10 笔",
+        "messages": {
+          "empty": "暂无资金流水"
+        }
+      }
+    },
+    "ed": {
+      "messages": {
+        "helpIntro": "提交参数示例(Player允许多个, Placement第一默认为你):"
+      }
+    },
+    "debug": {
+      "description": "发送 QQ markdown card 测试(被动回复)",
+      "active": { "description": "发送主动 markdown card 测试" },
+      "stream": { "description": "QQ 单聊流式测试：每 3 秒更新，共 2 次" },
+      "whoami": { "description": "查看当前调用者身份信息" }
+    }
+  }
+}

@@ -1,26 +1,98 @@
 import type { Context } from "koishi";
+import { $ } from "koishi";
+import { InputError } from "../../error/handle";
+import { compact, withPurseQueue } from "../../utils";
 
-export interface KaemanUser {
-  id: string;
-  purse: number;
-}
+export type Purse = ReturnType<typeof createPurse>;
 
-declare module "koishi" {
-  interface Tables {
-    kaeman_user: KaemanUser;
-  }
-}
+export const createPurse = (ctx: Context) => {
+  const logger = ctx.logger("kaeman");
 
-export const getPurse = async (ctx: Context, uid: string): Promise<number> => {
-  const [row] = await ctx.database.get("kaeman_user", { id: uid });
-  return row?.purse ?? 0;
-};
+  return {
+    async history(aid: number, page = 1) {
+      if (!aid) throw new Error("A Koishi user ID is required");
+      if (!Number.isSafeInteger(page) || page < 1)
+        throw new InputError(
+          "Page number must be a positive integer",
+          "commands.purse.messages.pageInvalid",
+        );
+      return withPurseQueue(ctx, async () => {
+        const total = await ctx.database.eval(
+          "kaeman.user.purse.history",
+          (row) => $.count(row.id),
+          { aid },
+        );
+        const pages = Math.max(1, Math.ceil(total / 10));
+        if (page > pages)
+          throw new InputError(
+            `Page number out of range, ${pages} pages in total`,
+            "commands.purse.messages.pageOutOfRange",
+            { pages },
+          );
+        const records = await ctx.database.get(
+          "kaeman.user.purse.history",
+          { aid },
+          {
+            sort: { id: "desc" },
+            offset: (page - 1) * 10,
+            limit: 10,
+          },
+        );
+        return { records, page, pages };
+      });
+    },
 
-export const addPurse = async (
-  ctx: Context,
-  uid: string,
-  delta: number,
-): Promise<void> => {
-  const purse = (await getPurse(ctx, uid)) + delta;
-  await ctx.database.upsert("kaeman_user", [{ id: uid, purse }]);
+    async get(aid: number): Promise<number> {
+      if (!aid) throw new Error("A Koishi user ID is required");
+      return withPurseQueue(ctx, async () => {
+        const [user] = await ctx.database.get("kaeman.user", { aid }, [
+          "purseCents",
+        ]);
+        const balance = (user?.purseCents ?? 0) / 100;
+        logger.debug(
+          "purse get aid=%d balance=%s",
+          aid,
+          compact.format(balance),
+        );
+        return balance;
+      });
+    },
+
+    async add(
+      aid: number,
+      profit: number,
+      source: "cn" | "ed" | "vg",
+    ): Promise<void> {
+      if (!aid) throw new Error("A Koishi user ID is required");
+      const deltaCents = Math.round(profit * 100);
+      await withPurseQueue(ctx, () =>
+        ctx.database.transact(async (tx) => {
+          const [user] = await tx.get("kaeman.user", { aid });
+          const before = (user?.purseCents ?? 0) / 100;
+          const purseCents = (user?.purseCents ?? 0) + deltaCents;
+          if (
+            !Number.isSafeInteger(deltaCents) ||
+            !Number.isSafeInteger(purseCents)
+          )
+            throw new Error("Amount or balance exceeds the safe integer range");
+          await tx.upsert("kaeman.user", [{ aid, purseCents }]);
+          await tx.create("kaeman.user.purse.history", {
+            aid,
+            deltaCents,
+            source,
+            createdAt: new Date(),
+          });
+          logger.info(
+            "purse update aid=%d %s%s via %s: %s -> %s",
+            aid,
+            profit < 0 ? "" : "+",
+            compact.format(profit),
+            source,
+            compact.format(before),
+            compact.format(purseCents / 100),
+          );
+        }),
+      );
+    },
+  };
 };
