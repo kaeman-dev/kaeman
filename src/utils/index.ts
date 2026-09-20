@@ -1,21 +1,8 @@
-import type { Context, Session } from "koishi";
+import type { Context } from "koishi";
 import { Item } from "../service/simulator";
+import { getPrices } from "../service/prices";
 
 export type Prices = Record<string, number>;
-
-export class InputError extends Error {}
-
-export const handleError = async (
-  ctx: Context,
-  session: Session,
-  err: unknown,
-  command: string,
-) => {
-  if (err instanceof InputError)
-    return session.send(err.message).catch(() => {});
-  ctx.logger("kaeman").error("[%s] 执行失败", command, err);
-  await session.send("操作失败，请稍后再试。").catch(() => {});
-};
 
 export const compact = new Intl.NumberFormat("en-US", {
   notation: "compact",
@@ -46,11 +33,13 @@ export const mergeItems = (items: Item[]): Item[] =>
     })),
   );
 
-export const formatProfit = (
-  prices: Prices | null,
+export const formatProfit = async (
+  ctx: Context,
   items: Item[],
   costIds: string[],
 ) => {
+  const prices = await getPrices(ctx);
+  
   if (!prices) return { text: "&4unknown", profit: 0 };
   const profit = items.reduce(
     (sum, { id, quantity }) => sum + (prices[id] ?? 0) * quantity,
@@ -61,3 +50,14 @@ export const formatProfit = (
 
 export const center = (text: string, width: number) =>
   text.length >= width ? text : " ".repeat(Math.floor((width - text.length) / 2)) + text;
+
+const purseQueues = new WeakMap<Context, Promise<void>>();
+
+export const withPurseQueue = <T>(ctx: Context, task: () => Promise<T>): Promise<T> => {
+  const next = (purseQueues.get(ctx.root) ?? Promise.resolve()).then(task);
+  purseQueues.set(ctx.root, next.then(
+    () => {},
+    () => {},
+  ));
+  return next;
+};

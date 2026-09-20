@@ -1,25 +1,26 @@
 import type { Context } from "koishi";
-import type { Config } from "../../index";
 import type { Prices } from "../../utils";
+import { logError } from "../../error/handle";
 
 let cache: Prices | null = null;
 
 export const fetchPrices = async (
   ctx: Context,
-  config: Config,
 ): Promise<Prices | null> => {
+  const logger = ctx.logger("kaeman");
+  logger.debug("fetching prices from %s", ctx.config.priceApiUrl);
   try {
-    cache = await ctx.http.get<Prices>(config.priceApiUrl, {
+    cache = await ctx.http.get<Prices>(ctx.config.priceApiUrl, {
       responseType: "json",
     });
+    logger.info("prices updated (%d items)", Object.keys(cache).length);
   } catch (err) {
-    ctx.logger("kaeman").warn("价格获取失败，沿用上次缓存", err);
+    logError(ctx, err, "Failed to fetch prices; using cached data if available", "warn");
   }
   return cache;
 };
 
 export const getPrices = (
   ctx: Context,
-  config: Config,
 ): Promise<Prices | null> =>
-  cache ? Promise.resolve(cache) : fetchPrices(ctx, config);
+  cache ? Promise.resolve(cache) : fetchPrices(ctx);

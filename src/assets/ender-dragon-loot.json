@@ -1,0 +1,172 @@
+{
+  "dragonWeights": {
+    "superior": 4,
+    "strong": 16,
+    "unstable": 16,
+    "young": 16,
+    "wise": 16,
+    "old": 16,
+    "protector": 16
+  },
+  "placementTable": [
+    [1, 1, 300],
+    [2, 2, 250],
+    [3, 3, 200],
+    [4, 4, 125],
+    [5, 5, 110],
+    [6, 8, 100],
+    [9, 10, 90],
+    [11, 12, 80],
+    [13, 25, 70]
+  ],
+  "quality": {
+    "damageThreshold": 1,
+    "damageBonus": 70,
+    "minimumDamageBonus": 10,
+    "perEye": 100,
+    "relativeDamage": 100
+  },
+  "items": [
+    {
+      "id": "DRAGON_HORN",
+      "name": "&5Dragon Horn",
+      "quality": 448,
+      "baseChance": 0.3,
+      "perEye": false,
+      "major": true,
+      "dragons": ["superior"]
+    },
+    {
+      "id": "ASPECT_OF_THE_DRAGON",
+      "name": "&6Aspect of the Dragons",
+      "quality": 447,
+      "baseChance": 0.03,
+      "perEye": true,
+      "major": true,
+      "excludeDragons": ["superior"]
+    },
+    {
+      "id": "DRAGON_SCALE",
+      "name": "&9Dragon Scale",
+      "quality": 296,
+      "baseChance": 0.3,
+      "perEye": false,
+      "major": true,
+      "dragons": ["young"]
+    },
+    {
+      "id": "LVL_1_LEGENDARY_ENDER_DRAGON",
+      "name": "&6Ender Dragon",
+      "quality": 450,
+      "baseChance": 0.0001,
+      "perEye": true,
+      "petLuck": true,
+      "major": true
+    },
+    {
+      "id": "LVL_1_EPIC_ENDER_DRAGON",
+      "name": "&5Ender Dragon",
+      "quality": 449,
+      "baseChance": 0.0005,
+      "perEye": true,
+      "petLuck": true,
+      "major": true
+    },
+    {
+      "id": "DRAGON_CLAW",
+      "name": "&9Dragon Claw",
+      "quality": 446,
+      "baseChance": 0.02,
+      "perEye": true,
+      "major": true
+    },
+    {
+      "id": "{dragon}_DRAGON_CHESTPLATE",
+      "name": "&6{display} Dragon Chestplate",
+      "quality": 410,
+      "baseChance": 0.3,
+      "major": true
+    },
+    {
+      "id": "{dragon}_DRAGON_LEGGINGS",
+      "name": "&6{display} Dragon Leggings",
+      "quality": 360,
+      "baseChance": 0.3,
+      "major": true
+    },
+    {
+      "id": "{dragon}_DRAGON_HELMET",
+      "name": "&6{display} Dragon Helmet",
+      "quality": 295,
+      "baseChance": 0.3,
+      "major": true
+    },
+    {
+      "id": "{dragon}_DRAGON_BOOTS",
+      "name": "&6{display} Dragon Boots",
+      "quality": 290,
+      "baseChance": 0.3,
+      "major": true
+    },
+    {
+      "id": "{dragon}_DRAGON_FRAGMENT",
+      "name": "&5{display} Dragon Fragment",
+      "quality": 22,
+      "baseChance": 1,
+      "major": false
+    },
+    {
+      "id": "ENCHANTED_ENDER_PEARL",
+      "name": "&aEnchanted Ender Pearl",
+      "quality": 15,
+      "baseChance": 1,
+      "major": false
+    },
+    {
+      "id": "ENDER_PEARL",
+      "name": "&fEnder Pearl",
+      "quality": 5,
+      "baseChance": 1,
+      "major": false
+    }
+  ],
+  "dye": { "id": "DYE_PEARLESCENT", "name": "&5Pearlescent Dye" },
+  "essence": { "id": "DRAGON_ESSENCE", "name": "&9Dragon Essence" },
+  "bonuses": {
+    "default": { "dyeChance": 0.00002, "essenceQuantity": 5 },
+    "superior": { "dyeChance": 0.00001, "essenceQuantity": 10 }
+  },
+  "costItem": "SUMMONING_EYE",
+  "defaultPlayers": [
+    {
+      "placement": 1,
+      "summoning_eyes_placed": 4,
+      "damage_dealt": [5000000, 6999999],
+      "magic_find": [100, 149],
+      "pet_luck": [100, 199]
+    },
+    {
+      "placement": 2,
+      "summoning_eyes_placed": 4,
+      "damage_dealt": [3000000, 3999999],
+      "magic_find": [100, 199],
+      "pet_luck": [100, 139]
+    },
+    {
+      "placement": 3,
+      "summoning_eyes_placed": 0,
+      "damage_dealt": [1000000, 1999999],
+      "magic_find": [100, 199],
+      "pet_luck": [100, 139]
+    }
+  ],
+  "presentation": {
+    "damagerLabels": [
+      "&e&l1st Damager &7&l- &cYou",
+      "&6&l2nd Damager &7&l- &6Player1",
+      "&c&l3rd Damager &7&l- &bPlayer2"
+    ],
+    "playerLabels": ["&cYou", "&6Player1", "&bPlayer2"],
+    "runecraftingExperience": [400, 499]
+  }
+}

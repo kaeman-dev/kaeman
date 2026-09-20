@@ -1,4 +1,22 @@
 {
+  "rolls": [17, 21],
+  "rareDrop": {
+    "chance": 0.0006,
+    "item": {
+      "id": "DYE_JADE",
+      "name": "&2Jade Dye",
+      "weight": 0,
+      "quantity": 1
+    }
+  },
+  "costItems": ["GOBLIN_EGG", "JUNGLE_KEY", "PRECURSOR_APPARATUS"],
+  "powder": {
+    "quantity": [2000, 7000],
+    "items": [
+      { "name": "&2    Mithril Powder", "weight": 1 },
+      { "name": "&d    Gemstone Powder", "weight": 1 }
+    ]
+  },
   "fineGems": [
     {
       "id": "FINE_JASPER_GEM",

@@ -14,21 +14,25 @@ export const simulateCn = async (
   ctx: Context,
   config: Config,
 ): Promise<SimResult> => {
+  const logger = ctx.logger("kaeman");
   const drops: Item[] = [...cnLoot.fineGems];
-  for (let i = 0, rolls = randInt(17, 21); i < rolls; i++) {
-    drops.push(
-      Math.random() < 0.0006
-        ? { id: "DYE_JADE", name: "&2Jade Dye", weight: 0, quantity: 1 }
-        : rollWeighted(cnLoot.items, (item) => item.weight),
-    );
+  const rolls = randInt(cnLoot.rolls[0], cnLoot.rolls[1]);
+  logger.debug("cn rolls=%d", rolls);
+  for (let i = 0; i < rolls; i++) {
+    if (Math.random() < cnLoot.rareDrop.chance) {
+      logger.info("rare drop: Jade Dye (cn)");
+      drops.push(cnLoot.rareDrop.item);
+    } else {
+      drops.push(rollWeighted(cnLoot.items, (item) => item.weight));
+    }
   }
   const merged = mergeItems(drops).sort((a, b) =>
     a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
   );
-  const { text: profitText, profit } = formatProfit(
-    await getPrices(ctx, config),
+  const { text: profitText, profit } = await formatProfit(
+    ctx,
     merged,
-    ["GOBLIN_EGG", "JUNGLE_KEY", "PRECURSOR_APPARATUS"],
+    cnLoot.costItems,
   );
   const lines = merged
     .map(
@@ -42,7 +46,8 @@ export const simulateCn = async (
     text: `&3&l------------------------------
 &5&l  CRYSTAL NUCLEUS LOOT BUNDLE
 &a&l  REWARDS
-${lines}${Math.random() < 0.5 ? `&2    Mithril Powder &7x${randInt(2000, 7000)}\n` : `&d    Gemstone Powder &7x${randInt(2000, 7000)}\n`}
+${lines}${rollWeighted(cnLoot.powder.items, (item) => item.weight).name} &7x${randInt(cnLoot.powder.quantity[0], cnLoot.powder.quantity[1])}
+
 &e[ATRI-BOT] Profit for Crystal Nucleus Run: ${profitText}
 &3&l------------------------------`,
   };

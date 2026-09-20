@@ -1,4 +1,21 @@
 {
+  "rolls": [5, 8],
+  "perk": { "chance": 0.2, "bonusRolls": 1 },
+  "rareDrop": {
+    "chance": 0.0003,
+    "item": {
+      "id": "DYE_FROSTBITTEN",
+      "name": "&3Frostbitten Dye",
+      "weight": 0,
+      "quantity": 1
+    }
+  },
+  "costItems": ["SKELETON_KEY"],
+  "powder": {
+    "name": "&bGlacite Powder",
+    "quantity": [25000, 50000],
+    "multiplier": 1.5
+  },
   "items": [
     {
       "id": "SHATTERED_PENDANT",

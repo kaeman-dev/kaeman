@@ -14,25 +14,26 @@ export const simulateVg = async (
   ctx: Context,
   config: Config,
 ): Promise<SimResult> => {
-  const perk = Math.random() < 0.2;
+  const logger = ctx.logger("kaeman");
+  const perk = Math.random() < vgLoot.perk.chance;
+  if (perk) logger.debug("vg HOTM perk triggered");
   const drops: Item[] = [];
-  for (let i = 0, rolls = randInt(5, 8) + (perk ? 1 : 0); i < rolls; i++) {
-    drops.push(
-      Math.random() < 0.0003
-        ? {
-            id: "DYE_FROSTBITTEN",
-            name: "&3Frostbitten Dye",
-            weight: 0,
-            quantity: 1,
-          }
-        : rollWeighted(vgLoot.items, (item) => item.weight),
-    );
+  const rolls = randInt(vgLoot.rolls[0], vgLoot.rolls[1]) +
+    (perk ? vgLoot.perk.bonusRolls : 0);
+  logger.debug("vg rolls=%d", rolls);
+  for (let i = 0; i < rolls; i++) {
+    if (Math.random() < vgLoot.rareDrop.chance) {
+      logger.info("rare drop: Frostbitten Dye (vg)");
+      drops.push(vgLoot.rareDrop.item);
+    } else {
+      drops.push(rollWeighted(vgLoot.items, (item) => item.weight));
+    }
   }
   const merged = mergeItems(drops);
-  const { text: profitText, profit } = formatProfit(
-    await getPrices(ctx, config),
+  const { text: profitText, profit } = await formatProfit(
+    ctx,
     merged,
-    ["SKELETON_KEY"],
+    vgLoot.costItems,
   );
   const lines = merged
     .map(
@@ -47,7 +48,7 @@ export const simulateVg = async (
 &d&l&f&l  VANGUARD &b&lCORPSE LOOT!${perk ? "\n&7  +1 bonus drop from &5HOTM&7! &8(Gifts from the Departed)" : ""}
  
 &a&l  REWARDS
-${lines}    &bGlacite Powder &8x${Math.floor(randInt(25000, 50000) * 1.5)}
+${lines}    ${vgLoot.powder.name} &8x${Math.floor(randInt(vgLoot.powder.quantity[0], vgLoot.powder.quantity[1]) * vgLoot.powder.multiplier)}
 
 
 &e[ATRI-BOT] Profit for &fVanguard Corpse: ${profitText}
