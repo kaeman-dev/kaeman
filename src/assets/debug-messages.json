@@ -1,0 +1,23 @@
+{
+  "card": {
+    "passive": ["# Kaeman Debug Card", "> This is a markdown message test"],
+    "active": ["# Kaeman Proactive Message Test", "> This is a proactive markdown message"],
+    "body": "**Bold text** mixed with plain text",
+    "buttons": [
+      {
+        "id": "kaeman_debug_docs",
+        "label": "Open Platform Docs",
+        "href": "https://bot.q.qq.com/wiki/"
+      },
+      {
+        "id": "kaeman_debug_satori",
+        "label": "Satori Adapter",
+        "href": "https://github.com/satorijs/satori"
+      }
+    ]
+  },
+  "stream": {
+    "interval": 3000,
+    "lines": ["▶️ **Streaming test started**", "⏳ Update 1", "✅ Update 2, stream finished"]
+  }
+}
