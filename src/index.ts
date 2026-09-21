@@ -1,6 +1,7 @@
 import { Context, Schema } from "koishi";
 import type { Command } from "koishi";
 import { registerCn } from "./commands/cn";
+import { registerDebug } from "./commands/debug";
 import { registerEd } from "./commands/ed";
 import { registerPurse } from "./commands/purse";
 import { registerVg } from "./commands/vg";
@@ -86,7 +87,7 @@ export const apply = (ctx: Context, config: Config) => {
   });
 
   ctx.on("ready", () => {
-    logger.info("kaeman ready: commands vg/cn/ed/purse registered");
+    logger.info("kaeman ready: commands vg/cn/ed/purse/debug registered");
   });
 
   ctx.on("dispose", () => {
@@ -112,6 +113,7 @@ export const apply = (ctx: Context, config: Config) => {
   commands.add(registerVg(ctx, config, purse));
   commands.add(registerCn(ctx, config, purse));
   commands.add(registerEd(ctx, config, purse));
+  commands.add(registerDebug(ctx));
   commands.add(registerPurse(ctx, purse, userIds, createFF1({
     key: config.ff1Key,
     length: 10,

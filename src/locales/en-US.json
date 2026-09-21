@@ -21,9 +21,50 @@
     },
     "debug": {
       "description": "Send a QQ markdown card test (passive reply)",
-      "active": { "description": "Send a proactive markdown card test" },
-      "stream": { "description": "QQ direct-message streaming test: updates every 3 seconds, 2 rounds" },
-      "whoami": { "description": "Show caller identity info" }
+      "active": {
+        "description": "Send a proactive markdown card test"
+      },
+      "stream": {
+        "description": "QQ direct-message streaming test: updates every 3 seconds, 2 rounds"
+      },
+      "whoami": {
+        "description": "Show caller identity info"
+      },
+      "reference": {
+        "description": "Send a markdown card quoting the current message"
+      },
+      "wakeup": {
+        "description": "Send a QQ direct-message wakeup card"
+      },
+      "keyboard": {
+        "description": "Test command buttons, callback buttons and confirmation dialogs"
+      },
+      "prompt": {
+        "description": "Send a QQ prompt keyboard test"
+      },
+      "typing": {
+        "description": "Show QQ direct-message typing status, optionally specify seconds"
+      },
+      "messages": {
+        "commandButton": "Show identity",
+        "callbackButton": "Test callback",
+        "confirm": "Send a button callback test?",
+        "callbackReceived": "✅ Button callback received; replying with its event ID."
+      }
+    }
+  },
+  "qq": {
+    "errors": {
+      "platform": "This feature requires a QQ official bot.",
+      "adapter": "The QQ adapter does not expose the required API. Check its version.",
+      "direct": "This feature requires a QQ direct message. DM the bot and try again.",
+      "wakeupReference": "A wakeup message cannot quote another message.",
+      "source": "The session has no message or event ID for a passive reply.",
+      "prompt": "Prompt keyboards require QQ group or direct messages.",
+      "duration": "Typing duration must be a positive integer in seconds.",
+      "interaction": "The button interaction ID or acknowledgement API is unavailable.",
+      "streamContent": "A stream requires at least one nonempty complete snapshot.",
+      "streamInterval": "Stream intervals must be between 0 and 50000 milliseconds."
     }
   }
 }

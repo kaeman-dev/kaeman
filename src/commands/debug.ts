@@ -1,118 +1,107 @@
 import type { Context, Session } from "koishi";
 import messages from "../assets/debug-messages.json";
+import { logError } from "../error/handle";
+import { withTrace } from "../error/trace";
+import {
+  acknowledgeQQInteraction,
+  createQQButton,
+  createQQKeyboard,
+  sendQQInputNotify,
+  sendQQMarkdown,
+} from "../service/qq";
+import type { QQMarkdownOptions } from "../service/qq";
+import { sendQQStream } from "../service/qq/stream";
 
-const linkButton = (id: string, label: string, href: string) => ({
-  id,
-  render_data: { label, visited_label: label, style: 1 },
-  action: { type: 0, permission: { type: 2 }, data: href },
-});
-
-const buildCard = (userId: string, active: boolean) => ({
-  msg_type: 2,
-  markdown: {
-    content: [
-      ...messages.card[active ? "active" : "passive"],
-      messages.card.body,
-      ...(active ? [] : [`<@${userId}>`]),
-    ].join("\n"),
-  },
-  keyboard: {
-    content: {
-      rows: [
-        {
-          buttons: messages.card.buttons.map(({ id, label, href }) => linkButton(id, label, href)),
-        },
-      ],
-    },
-  },
-});
-
-const sendCard = async (
-  session: Session,
-  card: ReturnType<typeof buildCard>,
-  active: boolean,
-) => {
-  const internal = (session.bot as any).internal;
-  const passive =
-    active || !session.messageId
-      ? {}
-      : {
-          msg_id: session.messageId,
-          msg_seq: ((session as any).seq = ((session as any).seq ?? 0) + 1),
-        };
-  if (typeof internal.sendPrivateMessage === "function") {
-    const send = session.isDirect
-      ? internal.sendPrivateMessage
-      : internal.sendMessage;
-    return send.call(internal, session.channelId, { ...card, ...passive });
-  }
-  const { msg_type: _, ...channelCard } = card;
-  if (session.isDirect)
-    return internal.sendDM(session.guildId, { ...channelCard, ...passive });
-  return internal.sendMessage(session.channelId, { ...channelCard, ...passive });
-};
-
-const sendStream = async (session: Session) => {
-  const internal = (session.bot as any).internal;
-  if (!session.isDirect || typeof internal?.sendPrivateStreamMessage !== "function")
-    return session.send("Streaming test only supports QQ direct messages; DM the bot and send /debug stream.");
-  const lines = messages.stream.lines;
-  let streamId: string | undefined;
-  for (let index = 0; index < lines.length; index++) {
-    if (index) await new Promise((resolve) => setTimeout(resolve, messages.stream.interval));
-    const result = await internal.sendPrivateStreamMessage(session.channelId, {
-      input_mode: "replace",
-      input_state: index === lines.length - 1 ? 10 : 1,
-      index,
-      content_type: "markdown",
-      content_raw: lines.slice(0, index + 1).join("\n\n"),
-      msg_id: session.messageId,
-      msg_seq: ((session as any).seq = ((session as any).seq ?? 0) + 1),
-      stream_msg_id: streamId,
-    });
-    streamId = result?.id ?? streamId;
-    if (!streamId) throw new Error("Streaming API did not return a message ID");
-  }
-};
-
-const executeDebug = async (
-  ctx: Context,
-  session: Session,
-  label: string,
-  task: () => Promise<unknown>,
-) => {
-  const logger = ctx.logger("kaeman");
-  logger.info(
-    "cmd /debug%s by %s (%s) in %s",
-    label,
-    session.username,
-    session.uid,
-    session.cid,
-  );
-  await task();
-  logger.info("cmd /debug%s done", label);
-};
+const sendCard = (session: Session, options: QQMarkdownOptions = {}) =>
+  sendQQMarkdown(session, [
+    ...messages.card[options.active || options.wakeup ? "active" : "passive"],
+    messages.card.body,
+    ...(options.active || options.wakeup ? [] : [`<@${session.userId}>`]),
+  ].join("\n"), {
+    keyboard: createQQKeyboard([
+      messages.card.buttons.map(({ id, label, href }) =>
+        createQQButton({ id, label, type: "link", data: href }),
+      ),
+    ]),
+    ...options,
+  });
 
 export const registerDebug = (ctx: Context) => {
   const debug = ctx
     .command("debug", "Send a QQ markdown card test (passive reply)")
-    .action(({ session }) =>
-      executeDebug(ctx, session, "", () =>
-        sendCard(session, buildCard(session.userId, false), false),
-      ),
-    );
+    .action(async ({ session }) => {
+      await sendCard(session);
+    });
   debug
     .subcommand(".active", "Send a proactive markdown card test")
-    .action(({ session }) =>
-      executeDebug(ctx, session, " active", () =>
-        sendCard(session, buildCard(session.userId, true), true),
-      ),
-    );
+    .action(async ({ session }) => {
+      await sendCard(session, { active: true });
+    });
+  debug
+    .subcommand(".reference", "Send a markdown card quoting the current message")
+    .action(async ({ session }) => {
+      await sendCard(session, { reference: session.messageId });
+    });
+  debug
+    .subcommand(".wakeup", "Send a QQ direct-message wakeup card")
+    .action(async ({ session }) => {
+      await sendCard(session, { wakeup: true });
+    });
+  debug
+    .subcommand(".keyboard", "Test command and callback buttons")
+    .action(async ({ session }) => {
+      const permission = { type: 0 as const, specify_user_ids: [session.userId] };
+      await sendCard(session, {
+        keyboard: createQQKeyboard([[
+          createQQButton({
+            id: "kaeman_debug_whoami",
+            label: session.text("commands.debug.messages.commandButton"),
+            type: "command",
+            data: "/debug whoami",
+            enter: true,
+            reply: true,
+            permission,
+          }),
+          createQQButton({
+            id: "kaeman_debug_callback",
+            label: session.text("commands.debug.messages.callbackButton"),
+            type: "callback",
+            data: "kaeman:debug",
+            permission,
+            modal: { content: session.text("commands.debug.messages.confirm") },
+          }),
+        ]]),
+      });
+    });
+  debug
+    .subcommand(".prompt", "Send a QQ prompt keyboard test")
+    .action(async ({ session }) => {
+      await sendCard(session, {
+        keyboard: undefined,
+        promptKeyboard: createQQKeyboard([[
+          createQQButton({
+            id: "kaeman_debug_prompt",
+            label: session.text("commands.debug.messages.commandButton"),
+            type: "command",
+            data: "/debug whoami",
+            enter: true,
+          }),
+        ]]),
+      });
+    });
+  debug
+    .subcommand(".typing [seconds:posint]", "Show QQ direct-message typing status")
+    .action(async ({ session }, seconds = 5) => {
+      await sendQQInputNotify(session, seconds);
+    });
   debug
     .subcommand(".stream", "QQ direct-message streaming test: updates every 3 seconds, 2 rounds")
-    .action(({ session }) =>
-      executeDebug(ctx, session, " stream", () => sendStream(session)),
-    );
+    .action(async ({ session }) => {
+      await sendQQStream(session,
+        messages.stream.lines.map((_, index, lines) => lines.slice(0, index + 1).join("\n\n")),
+        { interval: messages.stream.interval },
+      );
+    });
   debug
     .subcommand(".whoami", "Show caller identity info")
     .action(({ session }) =>
@@ -124,4 +113,17 @@ export const registerDebug = (ctx: Context) => {
         `Roles: ${session.event.member?.roles?.map((role) => role.id).join(", ") || "(unknown)"}`,
       ].join("\n")),
     );
+
+  ctx.on("interaction/button", (session) => {
+    if (session.platform !== "qq" || session.event.button?.id !== "kaeman_debug_callback") return;
+    return withTrace(async () => {
+      try {
+        await acknowledgeQQInteraction(session);
+        await sendQQMarkdown(session, session.text("commands.debug.messages.callbackReceived"));
+      } catch (error) {
+        logError(ctx, error, "QQ debug callback failed");
+      }
+    });
+  });
+  return debug;
 };
