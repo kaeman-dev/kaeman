@@ -15,9 +15,5 @@
         "href": "https://github.com/satorijs/satori"
       }
     ]
-  },
-  "stream": {
-    "interval": 3000,
-    "lines": ["▶️ **Streaming test started**", "⏳ Update 1", "✅ Update 2, stream finished"]
   }
 }
