@@ -1,7 +1,7 @@
 import type { Context } from "koishi";
 import { $ } from "koishi";
-import { InputError } from "../../error/handle";
-import { compact, withPurseQueue } from "../../utils";
+import { InputError } from "#error/handle.js";
+import { compact, withPurseQueue } from "#utils/index.js";
 
 export type Purse = ReturnType<typeof createPurse>;
 
@@ -45,24 +45,14 @@ export const createPurse = (ctx: Context) => {
     async get(aid: number): Promise<number> {
       if (!aid) throw new Error("A Koishi user ID is required");
       return withPurseQueue(ctx, async () => {
-        const [user] = await ctx.database.get("kaeman.user", { aid }, [
-          "purseCents",
-        ]);
+        const [user] = await ctx.database.get("kaeman.user", { aid }, ["purseCents"]);
         const balance = (user?.purseCents ?? 0) / 100;
-        logger.debug(
-          "purse get aid=%d balance=%s",
-          aid,
-          compact.format(balance),
-        );
+        logger.debug("purse get aid=%d balance=%s", aid, compact.format(balance));
         return balance;
       });
     },
 
-    async add(
-      aid: number,
-      profit: number,
-      source: "cn" | "ed" | "vg",
-    ): Promise<void> {
+    async add(aid: number, profit: number, source: "cn" | "ed" | "vg"): Promise<void> {
       if (!aid) throw new Error("A Koishi user ID is required");
       const deltaCents = Math.round(profit * 100);
       await withPurseQueue(ctx, () =>
@@ -70,10 +60,7 @@ export const createPurse = (ctx: Context) => {
           const [user] = await tx.get("kaeman.user", { aid });
           const before = (user?.purseCents ?? 0) / 100;
           const purseCents = (user?.purseCents ?? 0) + deltaCents;
-          if (
-            !Number.isSafeInteger(deltaCents) ||
-            !Number.isSafeInteger(purseCents)
-          )
+          if (!Number.isSafeInteger(deltaCents) || !Number.isSafeInteger(purseCents))
             throw new Error("Amount or balance exceeds the safe integer range");
           await tx.upsert("kaeman.user", [{ aid, purseCents }]);
           await tx.create("kaeman.user.purse.history", {
