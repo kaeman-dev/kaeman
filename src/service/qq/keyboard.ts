@@ -27,20 +27,19 @@ export const createQQButton = (options: QQButtonOptions) => ({
     type: { link: 0, callback: 1, command: 2 }[options.type],
     permission: options.permission ?? { type: 2 },
     data: options.data,
-    ...(options.type === "command" ? {
-      enter: options.enter ?? false,
-      reply: options.reply ?? false,
-    } : {}),
+    ...(options.type === "command"
+      ? {
+          enter: options.enter ?? false,
+          reply: options.reply ?? false,
+        }
+      : {}),
     ...(options.modal ? { modal: options.modal } : {}),
   },
 });
 
 export type QQButton = ReturnType<typeof createQQButton>;
 
-export const createQQKeyboard = (
-  rows: readonly (readonly QQButton[])[],
-  fontSize?: "small",
-) => ({
+export const createQQKeyboard = (rows: readonly (readonly QQButton[])[], fontSize?: "small") => ({
   content: {
     rows: rows.map((buttons) => ({ buttons: [...buttons] })),
     ...(fontSize ? { style: { font_size: fontSize } } : {}),
