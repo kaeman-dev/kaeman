@@ -118,7 +118,7 @@ export const renderMinecraft = async (
 
         // shadow
         const dim = (shift: number) =>
-          Math.floor(((parseInt(seg.color.slice(1), 16) >> shift) & 255) * 0.25);
+          Math.floor(((Number.parseInt(seg.color.slice(1), 16) >> shift) & 255) * 0.25);
         ctx.fillStyle = `rgb(${dim(16)},${dim(8)},${dim(0)})`;
         ctx.fillText(seg.text, x + offset, baseline + offset);
 
