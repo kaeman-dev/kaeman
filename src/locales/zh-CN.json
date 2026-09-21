@@ -21,9 +21,50 @@
     },
     "debug": {
       "description": "发送 QQ markdown card 测试(被动回复)",
-      "active": { "description": "发送主动 markdown card 测试" },
-      "stream": { "description": "QQ 单聊流式测试：每 3 秒更新，共 2 次" },
-      "whoami": { "description": "查看当前调用者身份信息" }
+      "active": {
+        "description": "发送主动 markdown card 测试"
+      },
+      "stream": {
+        "description": "QQ 单聊流式测试：每 3 秒更新，共 2 次"
+      },
+      "whoami": {
+        "description": "查看当前调用者身份信息"
+      },
+      "reference": {
+        "description": "发送引用当前消息的 Markdown 卡片"
+      },
+      "wakeup": {
+        "description": "发送 QQ 单聊唤醒卡片"
+      },
+      "keyboard": {
+        "description": "测试指令按钮、回调按钮及确认框"
+      },
+      "prompt": {
+        "description": "发送 QQ 提示键盘测试"
+      },
+      "typing": {
+        "description": "显示 QQ 单聊输入状态，可指定秒数"
+      },
+      "messages": {
+        "commandButton": "查看身份",
+        "callbackButton": "测试回调",
+        "confirm": "发送一次按钮回调测试？",
+        "callbackReceived": "✅ 已收到按钮回调，并使用事件 ID 回复。"
+      }
+    }
+  },
+  "qq": {
+    "errors": {
+      "platform": "此功能仅支持 QQ 官方机器人。",
+      "adapter": "当前 QQ 适配器缺少所需接口，请检查适配器版本。",
+      "direct": "此功能仅支持 QQ 单聊，请私聊机器人后重试。",
+      "wakeupReference": "唤醒消息不能同时引用消息。",
+      "source": "当前会话缺少消息或事件 ID，无法被动回复。",
+      "prompt": "提示键盘仅支持 QQ 群聊和单聊。",
+      "duration": "输入状态持续时间必须为正整数秒。",
+      "interaction": "缺少按钮回调 ID 或确认接口。",
+      "streamContent": "流式内容至少需要一个非空的完整快照。",
+      "streamInterval": "流式更新间隔必须在 0 到 50000 毫秒之间。"
     }
   }
 }
