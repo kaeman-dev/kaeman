@@ -5,7 +5,6 @@
       "placement": 1,
       "summoning_eyes_placed": 4,
       "damage_dealt": 5000000,
-      "first_place_damage": 5000000,
       "magic_find": 200,
       "pet_luck": 150
     },
@@ -13,7 +12,6 @@
       "placement": 2,
       "summoning_eyes_placed": 4,
       "damage_dealt": 3000000,
-      "first_place_damage": 5000000,
       "magic_find": 150,
       "pet_luck": 150
     }

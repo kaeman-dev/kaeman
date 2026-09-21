@@ -1,22 +1,13 @@
 import type { Context } from "koishi";
-import type { Config } from "../../../index";
-import {
-  formatProfit,
-  mergeItems,
-  randInt,
-  rollWeighted,
-} from "../../../utils";
-import { getPrices } from "../../prices";
-import { Item, SimResult } from "..";
-import cnLoot from "../../../assets/crystal-hollows-loot.json";
+import type { Config } from "#index.js";
+import { formatProfit, mergeItems, randInt, rollWeighted } from "#utils/index.js";
+import type { Item, SimResult } from "#service/simulator/index.js";
+import cnLoot from "#assets/crystal-hollows-loot.json";
 
-export const simulateCn = async (
-  ctx: Context,
-  config: Config,
-): Promise<SimResult> => {
+export const simulateCn = async (ctx: Context, config: Config): Promise<SimResult> => {
   const logger = ctx.logger("kaeman");
   const drops: Item[] = [...cnLoot.fineGems];
-  const rolls = randInt(cnLoot.rolls[0], cnLoot.rolls[1]);
+  const rolls = randInt(cnLoot.rolls);
   logger.debug("cn rolls=%d", rolls);
   for (let i = 0; i < rolls; i++) {
     if (Math.random() < cnLoot.rareDrop.chance) {
@@ -26,19 +17,10 @@ export const simulateCn = async (
       drops.push(rollWeighted(cnLoot.items, (item) => item.weight));
     }
   }
-  const merged = mergeItems(drops).sort((a, b) =>
-    a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
-  );
-  const { text: profitText, profit } = await formatProfit(
-    ctx,
-    merged,
-    cnLoot.costItems,
-  );
+  const merged = mergeItems(drops).sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  const { text: profitText, profit } = await formatProfit(ctx, config, merged, cnLoot.costItems);
   const lines = merged
-    .map(
-      ({ name, quantity }) =>
-        `    ${name}${quantity > 1 ? ` &7x${quantity}` : ""}\n`,
-    )
+    .map(({ name, quantity }) => `    ${name}${quantity > 1 ? ` &7x${quantity}` : ""}\n`)
     .join("");
   return {
     type: "ch.png",
@@ -46,7 +28,7 @@ export const simulateCn = async (
     text: `&3&l------------------------------
 &5&l  CRYSTAL NUCLEUS LOOT BUNDLE
 &a&l  REWARDS
-${lines}${rollWeighted(cnLoot.powder.items, (item) => item.weight).name} &7x${randInt(cnLoot.powder.quantity[0], cnLoot.powder.quantity[1])}
+${lines}${rollWeighted(cnLoot.powder.items, (item) => item.weight).name} &7x${randInt(cnLoot.powder.quantity)}
 
 &e[ATRI-BOT] Profit for Crystal Nucleus Run: ${profitText}
 &3&l------------------------------`,

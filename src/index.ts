@@ -1,19 +1,18 @@
 import { Context, Schema } from "koishi";
 import type { Command } from "koishi";
-import { registerCn } from "./commands/cn";
-import { registerDebug } from "./commands/debug";
-import { registerEd } from "./commands/ed";
-import { registerPurse } from "./commands/purse";
-import { registerVg } from "./commands/vg";
-import * as userDatabase from "./database/kaeman.user";
-import * as purseHistoryDatabase from "./database/kaeman.user.price.history";
-import { withTrace } from "./error/trace";
-import { registerErrorHandling } from "./error/handle";
-import { fetchPrices } from "./service/prices";
-import { createPurse } from "./service/purse";
-import { createFF1 } from "./utils/ff1";
-import enUS from "./locales/en-US.json";
-import zhCN from "./locales/zh-CN.json";
+import { registerCn } from "#commands/cn.js";
+import { registerDebug } from "#commands/debug.js";
+import { registerEd } from "#commands/ed.js";
+import { registerPurse } from "#commands/purse.js";
+import { registerVg } from "#commands/vg.js";
+import * as database from "#database/index.js";
+import { withTrace } from "#error/trace.js";
+import { registerErrorHandling } from "#error/handle.js";
+import { fetchPrices } from "#service/prices/index.js";
+import { createPurse } from "#service/purse/index.js";
+import { createFF1 } from "#utils/ff1/index.js";
+import enUS from "#locales/en-US.json";
+import zhCN from "#locales/zh-CN.json";
 
 export const name = "kaeman";
 
@@ -27,18 +26,15 @@ export interface Config {
 
 export const Config: Schema<Config> = Schema.object({
   priceApiUrl: Schema.string()
-    .default(
-      "https://raw.githubusercontent.com/SkyHelperBot/Prices/main/pricesV2.json",
-    )
+    .default("https://raw.githubusercontent.com/SkyHelperBot/Prices/main/pricesV2.json")
     .description("SkyHelperBot price API JSON"),
-  priceInterval: Schema.number()
-    .min(1)
-    .default(5)
-    .description("Price refresh interval (minutes)"),
+  priceInterval: Schema.number().min(1).default(5).description("Price refresh interval (minutes)"),
   ff1Key: Schema.string()
     .role("secret")
     .required()
-    .description("FF1 public UID encryption key, 64 hex characters (generate with openssl rand -hex 32)"),
+    .description(
+      "FF1 public UID encryption key, 64 hex characters (generate with openssl rand -hex 32)",
+    ),
 });
 
 export const apply = (ctx: Context, config: Config) => {
@@ -53,38 +49,29 @@ export const apply = (ctx: Context, config: Config) => {
 
   const commands = new Set<Command>();
   const isKaeman = (command?: Command | null): boolean => {
-    for (let cmd = command; cmd; cmd = cmd.parent)
-      if (commands.has(cmd)) return true;
+    for (let cmd = command; cmd; cmd = cmd.parent) if (commands.has(cmd)) return true;
     return false;
   };
 
-  ctx.middleware((session, next) =>
-    withTrace(async () => {
-      const start = Date.now();
-      try {
-        return await next();
-      } finally {
-        const { argv } = session;
-        if (argv?.command && isKaeman(argv.command))
-          logger.debug(
-            "cmd /%s finished in %dms",
-            argv.command.name,
-            Date.now() - start,
-          );
-      }
-    }),
+  ctx.middleware(
+    (session, next) =>
+      withTrace(async () => {
+        const start = Date.now();
+        try {
+          return await next();
+        } finally {
+          const { argv } = session;
+          if (argv?.command && isKaeman(argv.command))
+            logger.debug("cmd /%s finished in %dms", argv.command.name, Date.now() - start);
+        }
+      }),
     true,
   );
 
   registerErrorHandling(ctx);
-  ctx.plugin(userDatabase);
-  ctx.plugin(purseHistoryDatabase);
+  ctx.plugin(database);
   const purse = createPurse(ctx);
-  const userIds = createFF1({
-    key: config.ff1Key,
-    length: 10,
-    tweak: "kaeman:user:v1",
-  });
+  const userIds = createFF1(config.ff1Key, "kaeman:user:v1");
 
   ctx.on("ready", () => {
     logger.info("kaeman ready: commands vg/cn/ed/purse/debug registered");
@@ -95,7 +82,7 @@ export const apply = (ctx: Context, config: Config) => {
   });
 
   ctx.on("command/before-execute", (argv) => {
-    if (!isKaeman(argv.command)) return;
+    if (!argv.command || !argv.session || !isKaeman(argv.command)) return;
     logger.info(
       "cmd /%s by %s (%s) in %s",
       argv.command.name,
@@ -105,18 +92,11 @@ export const apply = (ctx: Context, config: Config) => {
     );
   });
 
-  ctx.setInterval(
-    () => withTrace(() => fetchPrices(ctx)),
-    config.priceInterval * 60_000,
-  );
+  ctx.setInterval(() => withTrace(() => fetchPrices(ctx, config)), config.priceInterval * 60_000);
 
   commands.add(registerVg(ctx, config, purse));
   commands.add(registerCn(ctx, config, purse));
   commands.add(registerEd(ctx, config, purse));
   commands.add(registerDebug(ctx.platform("qq", "qqguild")));
-  commands.add(registerPurse(ctx, purse, userIds, createFF1({
-    key: config.ff1Key,
-    length: 10,
-    tweak: "kaeman:purse:v1",
-  })));
+  commands.add(registerPurse(ctx, purse, userIds, createFF1(config.ff1Key, "kaeman:purse:v1")));
 };

@@ -1,6 +1,7 @@
 import type { Context } from "koishi";
-import { Item } from "../service/simulator";
-import { getPrices } from "../service/prices";
+import type { Config } from "#index.js";
+import type { Item } from "#service/simulator/index.js";
+import { getPrices } from "#service/prices/index.js";
 
 export type Prices = Record<string, number>;
 
@@ -10,19 +11,27 @@ export const compact = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
-export const randInt = (min: number, max: number) =>
-  min + Math.floor(Math.random() * (max - min + 1));
+export const randInt = ([min, max]: readonly number[]): number => {
+  if (
+    min === undefined ||
+    max === undefined ||
+    !Number.isFinite(min) ||
+    !Number.isFinite(max) ||
+    max < min
+  )
+    throw new Error("Invalid random integer range");
+  return min + Math.floor(Math.random() * (max - min + 1));
+};
 
-export const rollWeighted = <T>(
-  items: readonly T[],
-  weight: (item: T) => number,
-): T => {
+export const rollWeighted = <T>(items: readonly T[], weight: (item: T) => number): T => {
   let roll = Math.random() * items.reduce((sum, item) => sum + weight(item), 0);
   for (const item of items) {
     roll -= weight(item);
     if (roll < 0) return item;
   }
-  return items[items.length - 1];
+  const last = items.at(-1);
+  if (last === undefined) throw new Error("Cannot roll an empty item list");
+  return last;
 };
 
 export const mergeItems = (items: Item[]): Item[] =>
@@ -35,11 +44,12 @@ export const mergeItems = (items: Item[]): Item[] =>
 
 export const formatProfit = async (
   ctx: Context,
+  config: Config,
   items: Item[],
   costIds: string[],
 ) => {
-  const prices = await getPrices(ctx);
-  
+  const prices = await getPrices(ctx, config);
+
   if (!prices) return { text: "&4unknown", profit: 0 };
   const profit = items.reduce(
     (sum, { id, quantity }) => sum + (prices[id] ?? 0) * quantity,
@@ -55,9 +65,12 @@ const purseQueues = new WeakMap<Context, Promise<void>>();
 
 export const withPurseQueue = <T>(ctx: Context, task: () => Promise<T>): Promise<T> => {
   const next = (purseQueues.get(ctx.root) ?? Promise.resolve()).then(task);
-  purseQueues.set(ctx.root, next.then(
-    () => {},
-    () => {},
-  ));
+  purseQueues.set(
+    ctx.root,
+    next.then(
+      () => {},
+      () => {},
+    ),
+  );
   return next;
 };
