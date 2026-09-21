@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
+  "imports": {
+    "#*": "./lib/*"
+  },
   "files": [
     "lib",
     "dist",
@@ -11,7 +14,12 @@
   ],
   "license": "Apache-2.0",
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "prettier": {
+    "printWidth": 100
   },
   "keywords": [
     "chatbot",
@@ -20,6 +28,7 @@
   ],
   "devDependencies": {
     "@types/node": "^22.20.4",
+    "prettier": "^3.6.2",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {

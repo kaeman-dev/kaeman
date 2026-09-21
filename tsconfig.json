@@ -6,17 +6,16 @@
     "lib": ["es2024", "DOM"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "paths": {
+      "#*": ["./src/*"]
+    },
     "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": true,
-    "strictNullChecks": false,
-    "types": [
-      "node"
-    ],
-    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
+    "types": ["node"],
+    "resolveJsonModule": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
