@@ -203,11 +203,14 @@ export const simulateEd = async (
     simResult.some((player) => [...player.rewards.keys()].some((item) => item.id === edLoot.dye.id))
   )
     logger.info("rare drop: Pearlescent Dye (ed)");
-  simResult.slice(0, presentation.playerLabels.length).forEach((player, i) => {
+  [...simResult]
+    .sort((a, b) => b.damage_dealt - a.damage_dealt)
+    .slice(0, presentation.playerLabels.length)
+    .forEach((player, i) => {
     const first = [...player.rewards.entries()][0];
     if (!first) return;
     const [item, count] = first;
-    if (i === 0) profit += prices[item.id] ?? 0;
+    if (i === 0) profit += (prices[item.id] ?? 0) * count;
     text += `${presentation.playerLabels[i]} &ehas Obtained &6${item.name}${count > 1 ? ` &7x${count}` : ""}\n`;
   });
   text += `&e[ATRI-BOT] Profit for &f${dragon.charAt(0).toUpperCase() + dragon.slice(1)} Dragon: ${profit <= 0 ? "&c" : "&6"}${compact.format(profit)}`;
