@@ -10,7 +10,6 @@ import {
   sendQQMarkdown,
 } from "../service/qq";
 import type { QQMarkdownOptions } from "../service/qq";
-import { sendQQStream } from "../service/qq/stream";
 
 const sendCard = (session: Session, options: QQMarkdownOptions = {}) =>
   sendQQMarkdown(session, [
@@ -93,14 +92,6 @@ export const registerDebug = (ctx: Context) => {
     .subcommand(".typing [seconds:posint]", "Show QQ direct-message typing status")
     .action(async ({ session }, seconds = 5) => {
       await sendQQInputNotify(session, seconds);
-    });
-  debug
-    .subcommand(".stream", "QQ direct-message streaming test: updates every 3 seconds, 2 rounds")
-    .action(async ({ session }) => {
-      await sendQQStream(session,
-        messages.stream.lines.map((_, index, lines) => lines.slice(0, index + 1).join("\n\n")),
-        { interval: messages.stream.interval },
-      );
     });
   debug
     .subcommand(".whoami", "Show caller identity info")
