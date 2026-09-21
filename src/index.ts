@@ -113,7 +113,7 @@ export const apply = (ctx: Context, config: Config) => {
   commands.add(registerVg(ctx, config, purse));
   commands.add(registerCn(ctx, config, purse));
   commands.add(registerEd(ctx, config, purse));
-  commands.add(registerDebug(ctx));
+  commands.add(registerDebug(ctx.platform("qq", "qqguild")));
   commands.add(registerPurse(ctx, purse, userIds, createFF1({
     key: config.ff1Key,
     length: 10,
