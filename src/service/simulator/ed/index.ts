@@ -79,7 +79,12 @@ const simulateDragon = (dragon: string, players: SimPlayer[]) => {
   const items = dragonItems(dragon);
   const bonus =
     (Object.hasOwn(bonuses, dragon) ? bonuses[dragon] : undefined) ?? edLoot.bonuses.default;
-  const qualityOf = (item: Item) => items.find((entry) => entry.id === item.id)?.quality ?? 0;
+  const qualityOf = (item: Item) =>
+    item.id === edLoot.dye.id
+      ? 500
+      : item.id === edLoot.essence.id
+        ? 10
+        : (items.find((entry) => entry.id === item.id)?.quality ?? 0);
 
   const ranked = [...players].sort((a, b) => b.quality - a.quality);
   for (const item of items.filter((item) => item.major)) {
