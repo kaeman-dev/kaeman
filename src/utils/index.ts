@@ -11,29 +11,13 @@ export const compact = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
-export const randInt = ([min, max]: readonly number[]): number => {
-  if (
-    min === undefined ||
-    max === undefined ||
-    !Number.isFinite(min) ||
-    !Number.isFinite(max) ||
-    !Number.isInteger(min) ||
-    !Number.isInteger(max) ||
-    max < min
-  )
-    throw new Error("Invalid random integer range");
-  return min + Math.floor(Math.random() * (max - min + 1));
-};
-
 export const rollWeighted = <T>(items: readonly T[], weight: (item: T) => number): T => {
   let roll = Math.random() * items.reduce((sum, item) => sum + weight(item), 0);
   for (const item of items) {
     roll -= weight(item);
     if (roll < 0) return item;
   }
-  const last = items.at(-1);
-  if (last === undefined) throw new Error("Cannot roll an empty item list");
-  return last;
+  return items.at(-1)!;
 };
 
 export const mergeItems = (items: Item[]): Item[] =>

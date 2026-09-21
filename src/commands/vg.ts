@@ -10,8 +10,7 @@ export const registerVg = (ctx: Context, config: Config, purse: Purse) =>
     .command("vg", "SkyBlock Vanguard Loot Simulator")
     .userFields(["id"])
     .action(async ({ session }) => {
-      if (!session?.user) throw new Error("A Koishi user session is required");
       const result = await simulateVg(ctx, config);
-      await purse.add(session.user.id, result.profit, "vg");
-      await session.send(h.image(await renderMinecraft(result), "image/png"));
+      await purse.add(session!.user!.id, result.profit, "vg");
+      await session!.send(h.image(await renderMinecraft(result), "image/png"));
     });
