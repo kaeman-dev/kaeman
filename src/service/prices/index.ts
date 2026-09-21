@@ -12,8 +12,8 @@ export const fetchPrices = async (ctx: Context, config: Config): Promise<Prices 
     const data = await ctx.http.get<unknown>(config.priceApiUrl, {
       responseType: "json",
     });
-    if (!data || typeof data !== "object" || Array.isArray(data))
-      throw new Error("Price data must be an object of finite numbers");
+    if (!data || typeof data !== "object" || Array.isArray(data) || Object.keys(data).length === 0)
+      throw new Error("Price data must be a non-empty object of finite numbers");
     const prices = Object.fromEntries(
       Object.entries(data).map(([id, price]) => {
         if (typeof price !== "number" || !Number.isFinite(price))
