@@ -17,6 +17,8 @@ export const randInt = ([min, max]: readonly number[]): number => {
     max === undefined ||
     !Number.isFinite(min) ||
     !Number.isFinite(max) ||
+    !Number.isInteger(min) ||
+    !Number.isInteger(max) ||
     max < min
   )
     throw new Error("Invalid random integer range");
