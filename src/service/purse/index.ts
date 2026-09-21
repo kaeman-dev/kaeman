@@ -10,12 +10,6 @@ export const createPurse = (ctx: Context) => {
 
   return {
     async history(aid: number, page = 1) {
-      if (!aid) throw new Error("A Koishi user ID is required");
-      if (!Number.isSafeInteger(page) || page < 1)
-        throw new InputError(
-          "Page number must be a positive integer",
-          "commands.purse.messages.pageInvalid",
-        );
       return withPurseQueue(ctx, async () => {
         const total = await ctx.database.eval(
           "kaeman.user.purse.history",
@@ -43,7 +37,6 @@ export const createPurse = (ctx: Context) => {
     },
 
     async get(aid: number): Promise<number> {
-      if (!aid) throw new Error("A Koishi user ID is required");
       return withPurseQueue(ctx, async () => {
         const [user] = await ctx.database.get("kaeman.user", { aid }, ["purseCents"]);
         const balance = (user?.purseCents ?? 0) / 100;
@@ -53,15 +46,12 @@ export const createPurse = (ctx: Context) => {
     },
 
     async add(aid: number, profit: number, source: "cn" | "ed" | "vg"): Promise<void> {
-      if (!aid) throw new Error("A Koishi user ID is required");
       const deltaCents = Math.round(profit * 100);
       await withPurseQueue(ctx, () =>
         ctx.database.transact(async (tx) => {
           const [user] = await tx.get("kaeman.user", { aid });
           const before = (user?.purseCents ?? 0) / 100;
           const purseCents = (user?.purseCents ?? 0) + deltaCents;
-          if (!Number.isSafeInteger(deltaCents) || !Number.isSafeInteger(purseCents))
-            throw new Error("Amount or balance exceeds the safe integer range");
           await tx.upsert("kaeman.user", [{ aid, purseCents }]);
           await tx.create("kaeman.user.purse.history", {
             aid,

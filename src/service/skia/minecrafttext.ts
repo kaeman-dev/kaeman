@@ -57,9 +57,8 @@ export const renderMinecraft = async (
   const canvas = createCanvas(width, 1080);
   const ctx = canvas.getContext("2d");
 
-  let size = renderSettings.fontSizes[0];
-  if (size === undefined) throw new Error("At least one font size is required");
-  const minSize = size;
+  const minSize = renderSettings.fontSizes[0]!;
+  let size = minSize;
   let columnWidths: number[] = [];
   for (const candidate of renderSettings.fontSizes) {
     const widths = lines.map((line) =>

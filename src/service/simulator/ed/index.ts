@@ -2,7 +2,7 @@ import type { Context } from "koishi";
 import { Schema } from "koishi";
 import type { Config } from "#index.js";
 import { InputError } from "#error/handle.js";
-import { center, compact, randInt, rollWeighted } from "#utils/index.js";
+import { center, compact, rollWeighted } from "#utils/index.js";
 import { getPrices } from "#service/prices/index.js";
 import type { SimResult } from "#service/simulator/index.js";
 import edLoot from "#assets/ender-dragon-loot.json";
@@ -29,7 +29,8 @@ type SimPlayer = EDRequest["players"][number] & {
 };
 
 const bonuses: Record<string, typeof edLoot.bonuses.default> = edLoot.bonuses;
-const { dragonWeights, placementTable, quality, presentation } = edLoot;
+const { dragonWeights, quality, presentation } = edLoot;
+const placementTable = edLoot.placementTable as [number, number, number][];
 
 type Item = Pick<(typeof edLoot.items)[number], "id" | "name">;
 
@@ -57,11 +58,7 @@ const createSimPlayer = (req: EDRequest): SimPlayer[] => {
 
   return req.players.map((player) => {
     const placement = placementTable.find(
-      ([start, end]) =>
-        start !== undefined &&
-        end !== undefined &&
-        player.placement >= start &&
-        player.placement <= end,
+      ([start, end]) => player.placement >= start && player.placement <= end,
     );
 
     return {
@@ -140,12 +137,17 @@ export const simulateEd = async (
   } else {
     request = {
       dragon_type: "random",
-      players: edLoot.defaultPlayers.map((player) => ({
-        ...player,
-        damage_dealt: randInt(player.damage_dealt),
-        magic_find: randInt(player.magic_find),
-        pet_luck: randInt(player.pet_luck),
-      })),
+      players: edLoot.defaultPlayers.map((player) => {
+        const [damageMin, damageMax] = player.damage_dealt as [number, number];
+        const [findMin, findMax] = player.magic_find as [number, number];
+        const [luckMin, luckMax] = player.pet_luck as [number, number];
+        return {
+          ...player,
+          damage_dealt: damageMin + Math.floor(Math.random() * (damageMax - damageMin + 1)),
+          magic_find: findMin + Math.floor(Math.random() * (findMax - findMin + 1)),
+          pet_luck: luckMin + Math.floor(Math.random() * (luckMax - luckMin + 1)),
+        };
+      }),
     };
   }
 
@@ -158,8 +160,8 @@ export const simulateEd = async (
   logger.debug("ed dragon=%s players=%d", dragon, request.players.length);
 
   const ranked = [...request.players].sort((a, b) => b.damage_dealt - a.damage_dealt);
-  const firstPlayer = ranked[0];
-  if (!firstPlayer) throw new InputError("players must not be empty");
+  const firstPlayer = ranked[0]!;
+  const [runeMin, runeMax] = presentation.runecraftingExperience as [number, number];
 
   let text =
     center("&a&l------------------------------\n", 65) +
@@ -179,7 +181,10 @@ export const simulateEd = async (
       `&eYour Damage: &a${new Intl.NumberFormat("en-US").format(firstPlayer.damage_dealt)} &7(Position #1)\n`,
       75,
     ) +
-    center(`&eRunecrafting Experience: &d${randInt(presentation.runecraftingExperience)}\n`, 75) +
+    center(
+      `&eRunecrafting Experience: &d${runeMin + Math.floor(Math.random() * (runeMax - runeMin + 1))}\n`,
+      75,
+    ) +
     "\n\n" +
     center("&a&l------------------------------\n", 65);
 

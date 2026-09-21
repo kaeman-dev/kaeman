@@ -11,8 +11,7 @@ export const registerCn = (ctx: Context, config: Config, purse: Purse) =>
     .alias("crystal", "ch")
     .userFields(["id"])
     .action(async ({ session }) => {
-      if (!session?.user) throw new Error("A Koishi user session is required");
       const result = await simulateCn(ctx, config);
-      await purse.add(session.user.id, result.profit, "cn");
-      await session.send(h.image(await renderMinecraft(result), "image/png"));
+      await purse.add(session!.user!.id, result.profit, "cn");
+      await session!.send(h.image(await renderMinecraft(result), "image/png"));
     });

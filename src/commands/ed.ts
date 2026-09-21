@@ -14,11 +14,9 @@ export const registerEd = (ctx: Context, config: Config, purse: Purse) =>
     .alias("edragsim", "eg")
     .userFields(["id"])
     .action(async ({ session }, args) => {
-      if (!session) throw new Error("A Koishi session is required");
       if (args?.trim().toLowerCase() === "help")
-        return await session.send(`${session.text(".helpIntro")}\n${helpExample}`);
-      if (!session.user) throw new Error("A Koishi user session is required");
+        return await session!.send(`${session!.text(".helpIntro")}\n${helpExample}`);
       const result = await simulateEd(ctx, config, args ?? "");
-      await purse.add(session.user.id, result.profit, "ed");
-      await session.send(h.image(await renderMinecraft(result), "image/png"));
+      await purse.add(session!.user!.id, result.profit, "ed");
+      await session!.send(h.image(await renderMinecraft(result), "image/png"));
     });

@@ -15,9 +15,8 @@ export const registerPurse = (
     .command("purse", "Show purse balance")
     .userFields(["id"])
     .action(async ({ session }) => {
-      if (!session?.user) throw new Error("A Koishi user session is required");
-      const balance = await purse.get(session.user.id);
-      await session.send(session.text(".balance", { balance: compact.format(balance) }));
+      const balance = await purse.get(session!.user!.id);
+      await session!.send(session!.text(".balance", { balance: compact.format(balance) }));
     });
 
   command
@@ -25,12 +24,11 @@ export const registerPurse = (
     .userFields(["id"])
     .example("purse history 2")
     .action(async ({ session }, page = 1) => {
-      if (!session?.user) throw new Error("A Koishi user session is required");
-      const result = await purse.history(session.user.id, page);
-      if (!result.records.length) return session.text(".empty");
+      const result = await purse.history(session!.user!.id, page);
+      if (!result.records.length) return session!.text(".empty");
       const text = [
         `&6&lPurse History &7${result.page}/${result.pages}`,
-        `&7User ID: ${userIds(session.user.id)} | UTC+8`,
+        `&7User ID: ${userIds(session!.user!.id)} | UTC+8`,
         "",
         ...result.records.map(({ id, deltaCents, source, createdAt }) => {
           const sign = deltaCents > 0 ? "&a[+]" : deltaCents < 0 ? "&c[-]" : "&7[=]";
@@ -45,7 +43,7 @@ export const registerPurse = (
         ...(page < result.pages ? [`&7Next: purse history ${page + 1}`] : []),
       ].join("\n");
       const image = await renderMinecraft({ type: "ch.png", text });
-      await session.send(h.image(image, "image/png"));
+      await session!.send(h.image(image, "image/png"));
     });
   return command;
 };
