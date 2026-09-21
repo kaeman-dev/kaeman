@@ -1,20 +1,27 @@
 import type { Context } from "koishi";
 
-export interface PurseHistory {
-  id: number;
-  aid: number;
-  deltaCents: number;
-  source: string;
-  createdAt: Date;
-}
-
 declare module "koishi" {
   interface Tables {
-    "kaeman.user.purse.history": PurseHistory;
+    "kaeman.user": { aid: number; purseCents: number };
+    "kaeman.user.purse.history": {
+      id: number;
+      aid: number;
+      deltaCents: number;
+      source: string;
+      createdAt: Date;
+    };
   }
 }
 
 export const apply = (ctx: Context) => {
+  ctx.model.extend(
+    "kaeman.user",
+    {
+      aid: { type: "unsigned", length: 8, nullable: false },
+      purseCents: { type: "integer", length: 8, nullable: false, initial: 0 },
+    },
+    { primary: "aid" },
+  );
   ctx.model.extend(
     "kaeman.user.purse.history",
     {
